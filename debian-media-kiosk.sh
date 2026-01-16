@@ -26,7 +26,7 @@ apt-get install -y --install-recommends webmin usermin
 id -u player &>/dev/null || /usr/sbin/useradd -m player -g player -s /bin/bash
 id -u desmo &>/dev/null || /usr/sbin/useradd -m desmo -g users -G sudo,_ssh,docker,player -s /bin/bash
 echo "Enter Desmo SMB password: " && smbpasswd -a desmo
-id -u campbell &>/dev/null || useradd -m campbell -g users -G sudo,_ssh,docker,player -s /bin/bash 
+id -u campbell &>/dev/null || /usr/sbin/useradd -m campbell -g users -G sudo,_ssh,docker,player -s /bin/bash 
 echo "Enter Campbell password: " && passwd campbell
 echo "Enter Campbell SMB password: " && smbpasswd -a desmo
 systemctl restart smbd.service
@@ -83,6 +83,10 @@ apt install -y \
     locales \
     kodi \
     kodi-repository-kodi
+
+cd /home/player
+wget https://kodi.jellyfin.org/repository.jellyfin.kodi.zip
+chown player:player repository.jellyfin.kodi.zip
 
 # create config
 if [ -e "/etc/lightdm/lightdm.conf" ]; then
