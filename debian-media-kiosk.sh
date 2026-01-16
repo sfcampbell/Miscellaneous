@@ -3,7 +3,7 @@
 # get up to speed
 apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean
 apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient \
-    ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop
+    ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop pipewire-audio
 
 # pull & install Tailscale
 cd /tmp
@@ -70,6 +70,7 @@ systemctl restart sshd
 /usr/sbin/ufw enable
 
 # Portainer Agent
+systemctl enable docker.service
 docker run -d \
 -p 8000:8000 \
 -p 9443:9443 \
