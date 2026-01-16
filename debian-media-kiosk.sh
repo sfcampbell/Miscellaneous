@@ -3,12 +3,12 @@
 # get up to speed
 apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean && \
     apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient \
-    ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11
+    /usr/sbin/ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop
 
 # pull & install Tailscale
 cd /tmp
-curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | /usr/bin/tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | /usr/bin/tee /etc/apt/sources.list.d/tailscale.list
 apt update && apt install tailscale -y
 tailscale completion bash > /etc/bash_completion.d/tailscale
 read -p "Enter Tailscale Pre-Auth Key: " preauth
@@ -20,12 +20,15 @@ sh /tmp/webmin-setup-repo.sh
 apt-get install -y --install-recommends webmin usermin
 
 # create group
-groupadd -f player
+/usr/sbin/groupadd -f player
 
 # create users if not exist
-id -u player &>/dev/null || useradd -m player -g player -s /bin/bash
-id -u desmo &>/dev/null || useradd -m desmo -g users -G sudo,_ssh,docker,player -s /bin/bash && passwd desmo && smbpasswd -a desmo
-id -u campbell &>/dev/null || useradd -m campbell -g users -G sudo,_ssh,docker,player -s /bin/bash && passwd campbell && smbpasswd -a desmo
+id -u player &>/dev/null || /usr/sbin/useradd -m player -g player -s /bin/bash
+id -u desmo &>/dev/null || /usr/sbin/useradd -m desmo -g users -G sudo,_ssh,docker,player -s /bin/bash
+echo "Enter Desmo SMB password: " && smbpasswd -a desmo
+id -u campbell &>/dev/null || useradd -m campbell -g users -G sudo,_ssh,docker,player -s /bin/bash 
+echo "Enter Campbell password: " && passwd campbell
+echo "Enter Campbell SMB password: " && smbpasswd -a desmo
 systemctl restart smbd.service
 
 # configure and populate Plymouth
@@ -37,22 +40,22 @@ cp -r plymouth-themes/pack_1/black_hud /usr/share/plymouth/themes/
 sed -i -e 's/quiet/quiet splash/g' /etc/default/grub
 echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub
 /usr/sbin/plymouth-set-default-theme -R flame
-update-grub2
+/usr/sbin/update-grub2
 
 # configure firewall
-ufw default deny incoming && sudo ufw default allow outgoing
-ufw allow SSH
-ufw allow Samba
-ufw allow "WWW Full"  #jellyfin
-ufw allow 873  #rsync
-ufw allow from any proto udp to any port 1900  #jellyfin_dlna
-ufw allow from any proto udp to any port 7359  #jellyfin_discovery
-ufw allow 8000  #portainer_http
-ufw allow 8181  #tautulli
-ufw allow 9443  #portainer_https
-ufw allow 32400  #plex
-ufw allow from any proto tcp to any port 10000  #webmin
-ufw enable
+/usr/sbin/ufw default deny incoming && /usr/sbin/ufw default allow outgoing
+/usr/sbin/ufw allow SSH
+/usr/sbin/ufw allow Samba
+/usr/sbin/ufw allow "WWW Full"  #jellyfin
+/usr/sbin/ufw allow 873  #rsync
+/usr/sbin/ufw allow from any proto udp to any port 1900  #jellyfin_dlna
+/usr/sbin/ufw allow from any proto udp to any port 7359  #jellyfin_discovery
+/usr/sbin/ufw allow 8000  #portainer_http
+/usr/sbin/ufw allow 8181  #tautulli
+/usr/sbin/ufw allow 9443  #portainer_https
+/usr/sbin/ufw allow 32400  #plex
+/usr/sbin/ufw allow from any proto tcp to any port 10000  #webmin
+/usr/sbin/ufw enable
 
 # Portainer Agent
 docker run -d \
@@ -75,7 +78,7 @@ chown -R player:docker /opt/plexmediaserver
 ###### Window Manager & Kiosk Config ######
 
 # get software [removed openbox,chromium,xorg,unclutter]
-apt-get install -y \
+apt install -y \
     lightdm \
     locales \
     kodi \
