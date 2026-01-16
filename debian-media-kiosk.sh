@@ -42,6 +42,18 @@ echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub
 /usr/sbin/plymouth-set-default-theme -R flame
 /usr/sbin/update-grub2
 
+# tweak SSHD
+cat > /etc/ssh/sshd_config << EOF
+Port 22
+LoginGraceTime 1m
+PermitRootLogin prohibit-password
+MaxAuthTries 4
+AuthorizedKeysFile     .ssh/authorized_keys .ssh/authorized_keys2
+PasswordAuthentication yes
+PermitEmptyPasswords no
+EOF
+systemctl restart smbd.service
+
 # configure firewall
 /usr/sbin/ufw default deny incoming && /usr/sbin/ufw default allow outgoing
 /usr/sbin/ufw allow SSH
