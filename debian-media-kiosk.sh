@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # get up to speed
-apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean && \
-    apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient \
-    /usr/sbin/ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop
+apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean
+apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient \
+    ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop
 
 # pull & install Tailscale
 cd /tmp
