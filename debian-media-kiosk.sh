@@ -24,7 +24,7 @@ apt-get install -y --install-recommends webmin usermin
 
 # create users if not exist
 id -u player &>/dev/null || /usr/sbin/useradd -m player -g player -s /bin/bash
-id -u desmo &>/dev/null || /usr/sbin/usermod -a -G sudo,_ssh,docker,player desmo
+/usr/sbin/usermod -a -G sudo,_ssh,docker,player desmo
 echo "Enter Desmo SMB password: " && smbpasswd -a desmo
 id -u campbell &>/dev/null || /usr/sbin/useradd -m campbell -g users -G sudo,_ssh,docker,player -s /bin/bash 
 echo "Enter Campbell password: " && passwd campbell
