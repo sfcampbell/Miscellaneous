@@ -2,8 +2,8 @@
 
 # get up to speed
 apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean
-apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient \
-    ufw iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop pipewire-audio
+apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient ufw \
+    iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop pipewire-audio fastfetch
 
 # pull & install Tailscale
 cd /tmp
@@ -30,6 +30,9 @@ id -u campbell &>/dev/null || /usr/sbin/useradd -m campbell -g users -G sudo,_ss
 echo "Enter Campbell password: " && passwd campbell
 echo "Enter Campbell SMB password: " && smbpasswd -a desmo
 systemctl restart smbd.service
+echo "fastfetch" >> /home/desmo/.bashrc
+echo "fastfetch" >> /home/campbell/.bashrc
+echo "fastfetch" >> /root/.bashrc
 
 # configure and populate Plymouth
 cd /home/desmo
