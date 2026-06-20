@@ -4,7 +4,7 @@
 apt update && apt upgrade -y --with-new-pkgs && apt dist-upgrade -y && apt autoremove -y --purge && apt clean
 apt install -y docker.io docker-compose docker-doc containernetworking-plugins curl wget sudo samba smbclient ufw \
     iucode-tool unattended-upgrades apt-listchanges plymouth-themes plymouth-x11 htop bpytop pipewire-audio fastfetch \
-    cifs-utils
+    cifs-utils rsync
 
 # pull & install Tailscale
 cd /tmp
@@ -43,8 +43,6 @@ cp -r plymouth-themes/pack_3/hud_3 /usr/share/plymouth/themes/
 cp -r plymouth-themes/pack_1/black_hud /usr/share/plymouth/themes/
 sed -i -e 's/quiet/quiet splash/g' /etc/default/grub
 echo "GRUB_GFXMODE=1920x1080" >> /etc/default/grub
-echo "GRUB_TIMEOUT_STYLE=menu" >> /etc/default/grub
-echo "GRUB_TIMEOUT=3" >> /etc/default/grub
 /usr/sbin/plymouth-set-default-theme -R flame
 /usr/sbin/update-grub2
 
